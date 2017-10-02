@@ -2,7 +2,7 @@ import sys
 from gedcomFileParser import GEDCOMFileParser
 from userStory import checkUserStory , display_error
 from prettytable import PrettyTable
-fileName = 'familytree.ged'
+fileName = 'falsetree.ged'
 
 x = PrettyTable()
 y = PrettyTable()
