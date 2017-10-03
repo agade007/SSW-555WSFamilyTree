@@ -4,10 +4,64 @@ errorList = []
 
 def checkUserStory(individuals, families):
 
+    us_01_dates_before_current(individuals, families)
+    us_02_birth_before_marriage(individuals, families)
     us03_birth_before_death(individuals)
     us04_marriage_before_divorce(families)
     us07_less_than_150year_old(individuals)
     us_08_birthbefore_marriage_after9monthsdivorce(individuals,families)
+    
+#User story 1 dates are before current date
+def us_01_dates_before_current(individuals, families):
+
+    return_flag = True
+    for individual in individuals:
+        if individual.birthday and individual.birthday > datetime.now().date():
+            error_description = "Birth of "+ individual.id+ " occurs after current date"
+            report_error('ERROR: INDIVIDUAL: US01: ', error_description)
+            return_flag = False
+
+        if individual.death and individual.death > datetime.now().date():
+            error_description = "Death of "+individual.id+" occurs after current date"
+            report_error('ERROR: INDIVIDUAL: US01: ', error_description)
+            return_flag = False
+
+    for family in families:
+        if family.married and family.married > datetime.now().date():
+            error_description = "In family "+family.id+" marriage of "+family.husbandId+" and "+family.wifeId+" occurs after current date"
+            report_error('ERROR: FAMILY: US01: ', error_description)
+            return_flag = False
+
+        if family.divorced and family.divorced > datetime.now().date():
+            error_description = "In family " +family.id+" divorce of "+ family.husbandId+" and "+family.wifeId+" occurs after current date"
+            report_error('ERROR: FAMILY: US01: ', error_description)
+            return_flag = False
+
+    return return_flag
+
+#User story 2 birth should be before marriage
+def us_02_birth_before_marriage(individuals, families):
+    
+    return_flag = True
+    for family in families:
+        if family.married:
+            for individual in individuals:
+                if individual.id == family.husbandId:
+                    husband = individual
+                if individual.id == family.wifeId:
+                    wife = individual
+
+            if wife.birthday and wife.birthday > family.married:
+                error_description = "Birth of wife "+wife.id+" occurs after marriage"
+                report_error('ERROR: FAMILY: US02:', error_description)
+                return_flag = False
+
+            if husband.birthday and husband.birthday > family.married:
+                error_description = "Birth of husband "+husband.id+" occurs after marraige"
+                report_error('ERROR: FAMILY: US02: ',error_description)
+                return_flag = False
+
+    return return_flag
 
 
 #User story 3 birth should occur before death
