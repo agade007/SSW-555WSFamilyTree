@@ -10,6 +10,8 @@ def checkUserStory(individuals, families):
     us04_marriage_before_divorce(families)
     us07_less_than_150year_old(individuals)
     us_08_birthbefore_marriage_after9monthsdivorce(individuals,families)
+    US05_marriage_before_death(individuals,families)
+    US06_divorce_before_death(individuals,families)
     
 #User story 1 dates are before current date
 def us_01_dates_before_current(individuals, families):
@@ -121,7 +123,30 @@ def us_08_birthbefore_marriage_after9monthsdivorce(individuals, families):
                         report_error('ANOMALY: FAMILY: US08:', error_description)
                         return_flag=False
     return return_flag
-
+#user story 5:marriage occuring before the death of either spouse
+def US05_marriage_before_death(individuals,families):
+    return_flag=True
+    for family in families:
+        if family.married:
+            for individual in individuals:
+                if family.married and individual.death:
+                    if family.married >individual.death:
+                        error_description = family.id+" "+" Marriage "+str(family.married)+" occurs before death of either spouse. "+str(individual.death)
+                        report_error('ERROR: FAMILY: US05: ', error_description)
+                        return_flag = False
+    return return_flag
+def US06_divorce_before_death(individuals,families):
+    return_flag=True
+    for family in families:
+        if family.married:
+            for individual in individuals:
+                if family.divorced and individual.death:
+                    if family.divorced>individual.death:
+                        error_description = family.id+" "+family.husbandId+""+family.wifeId+" Divorced "+str(family.divorced)+" before death of either spouse. "+str(individual.death)
+                        report_error('ERROR: FAMILY: US06: ', error_description)
+                        return_flag = False
+    return return_flag                        
+                
 
 
 def report_error(errortype, description):
