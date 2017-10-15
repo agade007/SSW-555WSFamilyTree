@@ -143,7 +143,7 @@ def US06_divorce_before_death(individuals,families):
                 if family.divorced and individual.death:
                     if family.divorced>individual.death:
                         error_description = family.id+" "+family.husbandId+""+family.wifeId+" Divorced "+str(family.divorced)+" before death of either spouse. "+str(individual.death)
-                        report_error('ERROR: FAMILY: US06: ', error_description)
+                        report_error('ERROR: FAMILY: US06:', error_description)
                         return_flag = False
     return return_flag                        
                 
