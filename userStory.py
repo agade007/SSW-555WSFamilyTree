@@ -1,5 +1,6 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from collections import Counter
 errorList = []
 
 def checkUserStory(individuals, families):
@@ -12,6 +13,7 @@ def checkUserStory(individuals, families):
     us_08_birthbefore_marriage_after9monthsdivorce(individuals,families)
     US05_marriage_before_death(individuals,families)
     US06_divorce_before_death(individuals,families)
+
     
 #User story 1 dates are before current date
 def us_01_dates_before_current(individuals, families):
@@ -127,26 +129,50 @@ def us_08_birthbefore_marriage_after9monthsdivorce(individuals, families):
 def US05_marriage_before_death(individuals,families):
     return_flag=True
     for family in families:
+        ##searching through individuals to get husband and wife
         if family.married:
             for individual in individuals:
-                if family.married and individual.death:
-                    if family.married >individual.death:
-                        error_description = family.id+" "+" Marriage "+str(family.married)+" occurs before death of either spouse. "+str(individual.death)
-                        report_error('ERROR: FAMILY: US05: ', error_description)
-                        return_flag = False
+                if individual.id==family.husbandId:
+                    husband=individual
+                if individual.id==family.wifeId:
+                    wife=individual
+            if wife.alive==False:
+                if family.married<wife.death:
+                    error_description="Death of Wife"+str(wife.id)+"occurs before marriage."+str(family.married)
+                    report_error('ERROR:FAMILY:US05:',error_description)
+                    return_flag=False
+            if husband.alive==False:
+                if family.married>husband.death:
+                    error_description="Death of Husband"+str(husband.id)+"occurs before marriage."+str(family.married)
+                    report_error('ERROR:FAMILY:US05:',error_description)
+                    return_flag=False
     return return_flag
+
+ # User story 6: divorce before death                   
 def US06_divorce_before_death(individuals,families):
     return_flag=True
     for family in families:
-        if family.married:
+        if family.divorced :
             for individual in individuals:
-                if family.divorced and individual.death:
-                    if family.divorced>individual.death:
-                        error_description = family.id+" "+family.husbandId+""+family.wifeId+" Divorced "+str(family.divorced)+" before death of either spouse. "+str(individual.death)
-                        report_error('ERROR: FAMILY: US06:', error_description)
-                        return_flag = False
-    return return_flag                        
+                if individual.id==family.husbandId:
+                    husband=individual
+                if individual.id==family.wifeId:
+                    wife=individual
+            if wife.alive==False:
+                if family.divorced<wife.death:
+                    error_description="Death of Wife"+str(wife.id)+"occurs before divorce."+str(family.divorced)
+                    report_error('ERROR:FAMILY:US06:',error_description)
+                    return_flag=False
                 
+            if husband.alive==False:
+                if family.divorced>husband.death:
+                    print(husband)
+                    error_description="Death of Husband"+str(husband.id)+"occurs before divorce."+str(family.divorced)
+                    report_error('ERROR:FAMILY:US06:',error_description)
+                    return_flag=False
+    return return_flag
+ 
+                  
 
 
 def report_error(errortype, description):
