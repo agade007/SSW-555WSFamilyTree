@@ -18,6 +18,8 @@ def checkUserStory(individuals, families):
     US06_divorce_before_death(individuals,families)
     US14_mutiple_birth_5(individuals, families)
     US16_males_same_lastname(individuals, families)
+    us10_marriage_after_14yrs(individuals, families)
+    us21_correct_gender(individuals, families)
 
     
 #User story 1 dates are before current date
@@ -214,7 +216,53 @@ def US16_males_same_lastname(individuals,families):
 
     return return_flag
 
- 
+#US10 - Marriage should be atleast 14 years after the birth of both spouses
+def us10_marriage_after_14yrs(individuals, families):
+
+    return_flag = True
+
+    for family in families:
+        for individual in individuals:
+            if individual.id == family.husbandId:
+                husband = individual
+            if individual.id == family.wifeId:
+                wife = individual
+
+        if husband.age < 14:
+            error_description = family.id+" "+husband.id+" Husband is married before age of 14"
+            report_error('ANOMALY: FAMILY: US10:',error_description)
+            return_flag = False
+
+        if wife.age < 14:
+            error_description = family.id + " " + wife.id + " Wife is married before age of 14"
+            report_error('ANOMALY: FAMILY: US10:', error_description)
+            return_flag = False
+    return return_flag
+
+#US21 - Correct Gender for Role; husband should be male, wife should be female
+def us21_correct_gender(individuals, families):
+
+    return_flag = True
+
+    for family in families:
+        for individual in individuals:
+            if individual.id == family.husbandId:
+                husband = individual
+            if individual.id == family.wifeId:
+                wife = individual
+
+        if husband.gender is not "M":
+            error_description = family.id+" "+husband.id+" Husband is not a male"
+            report_error('ANOMALY: FAMILY: US21: ',error_description)
+            return_flag = False
+
+        if wife.gender is not "F":
+            error_description = family.id + " " + wife.id + " Wife is not a female"
+            report_error('ANOMALY: FAMILY: US21: ', error_description)
+            return_flag = False
+    return return_flag
+
+
                   
 
 
