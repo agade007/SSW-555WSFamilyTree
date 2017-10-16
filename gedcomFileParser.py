@@ -8,7 +8,8 @@ def GEDCOMFileParser(filename):
     listOfIndividuals = []
     listOfFamilies = []
     gedlist = []
-    lines = [line.rstrip('\n\r') for line in open(filename)]
+    f = open(filename)
+    lines = [line.rstrip('\n\r') for line in f]
 
     for line in lines:
         current_gedcom = gedcomLineClass(line)
@@ -98,4 +99,5 @@ def GEDCOMFileParser(filename):
                         date_type = None
             listOfFamilies.append(familyObject)
 
+    f.close()
     return listOfIndividuals, listOfFamilies
