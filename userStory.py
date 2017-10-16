@@ -5,14 +5,19 @@ errorList = []
 
 def checkUserStory(individuals, families):
 
+    #Sprint 1
     us_01_dates_before_current(individuals, families)
     us_02_birth_before_marriage(individuals, families)
     us03_birth_before_death(individuals)
     us04_marriage_before_divorce(families)
     us07_less_than_150year_old(individuals)
     us_08_birthbefore_marriage_after9monthsdivorce(individuals,families)
+    
+    #Sprint2
     US05_marriage_before_death(individuals,families)
     US06_divorce_before_death(individuals,families)
+    US14_mutiple_birth_5(individuals, families)
+    US16_males_same_lastname(individuals, families)
 
     
 #User story 1 dates are before current date
@@ -171,6 +176,44 @@ def US06_divorce_before_death(individuals,families):
                     report_error('ERROR:FAMILY:US06:',error_description)
                     return_flag=False
     return return_flag
+
+#US14: No more than five siblings should be born at the same time
+def US14_mutiple_birth_5(individuals,families):
+    return_flag=True
+    for family in families:
+        siblings_id=family.children
+        siblings=list(x for x in individuals if x.id in siblings_id)
+        sib_birthday=[]
+        for sibling in siblings:
+            sib_birthday.append(sibling.birthday)
+        result = Counter(sib_birthday).most_common(1)
+        for(a,b) in result:
+            if b>5:
+                error_description = family.id+"More than 5 siblings born at once"
+                report_error('ERROR: FAMILY: US14: ' ,error_description)
+                return_flag = False
+    return return_flag
+
+#US16: All male members of a family should have the same last name
+def US16_males_same_lastname(individuals,families):
+    return_flag=True
+    for family in families:
+        if family.married:
+            # Search through individuals to get husband and wife
+            lastname=family.husbandName[1]
+            for individual in individuals:
+                id=individual.id
+                name=individual.name
+                gender=individual.gender
+                if id in family.children:
+                    if gender == "M":
+                        if lastname not in name:
+                            error_description = individual.id+" Lastname not the same as father "
+                            report_error('ERROR:INDIVIDUAL: US16: ',error_description)
+                            return_flag = False
+
+    return return_flag
+
  
                   
 
