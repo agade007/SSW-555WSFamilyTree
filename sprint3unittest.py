@@ -13,6 +13,17 @@ class test_unique_name_birthday(unittest.TestCase):
         individuals,_ = GEDCOMFileParser(fileName)
         self.assertFalse(us23_unique_name_birthday(individuals))
 
+class test_list_all_deceased_individuals(unittest.TestCase):
+    def test_list_all_deceased_individuals_1(self):
+        individuals,_ = GEDCOMFileParser(fileName)
+        self.assertFalse(us_29_list_all_deceased_individuals(individuals))
+
+class test_list_living_married_people(unittest.TestCase):
+    def test_list_living_married_people_1(self):
+        individuals,families = GEDCOMFileParser(fileName)
+        self.assertFalse(us30_list_living_married_people(individuals,families))
+
+
 
 if __name__ == '__main__':
     unittest.main()
