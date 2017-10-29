@@ -1,6 +1,6 @@
 import sys
 from gedcomFileParser import GEDCOMFileParser
-from userStory import checkUserStory , display_error
+from userStory import checkUserStory , display
 from prettytable import PrettyTable
 fileName = 'falsetree.ged'
 
@@ -12,7 +12,7 @@ def main():
     checkUserStory(individual, families)
     displayData(individual, families)
     print()
-    display_error()
+    display()
 
 
 def displayData(individual, families):
