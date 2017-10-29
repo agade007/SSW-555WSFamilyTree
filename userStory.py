@@ -4,7 +4,8 @@ from collections import Counter
 errorList = []
 deathList = []
 marriedList = []
-
+newBornList = []
+deadPeopleList = []
 
 def checkUserStory(individuals, families):
 
@@ -29,6 +30,9 @@ def checkUserStory(individuals, families):
     us23_unique_name_birthday(individuals)
     us_29_list_all_deceased_individuals(individuals)
     us30_list_living_married_people(individuals, families)
+    us35_people_born_in_30days(individuals)
+    us36_people_died_in_last30_days(individuals)
+
     
 #User story 1 dates are before current date
 def us_01_dates_before_current(individuals, families):
@@ -334,6 +338,25 @@ def us30_list_living_married_people(individuals, families):
             marriedPeople = husband.id+" "+str(husband.name)+" and "+wife.id+" "+str(wife.name)
             marriedList.append(marriedPeople)
 
+# US35 List of people born in last 30 days.
+def us35_people_born_in_30days(individuals):
+    today = datetime.today()
+    for individual in individuals:
+        individual_birthday = individual.birthday
+        daysBefore = (today.date() - individual_birthday).days
+        if daysBefore > 0 and daysBefore <= 30:
+            newBornList.append(individual.id+" "+str(individual.name[0])+" "+str(individual.name[1]))
+
+# US36 List of people who died in last 30 days
+def us36_people_died_in_last30_days(individuals):
+    today = datetime.today()
+    for individual in individuals:
+        if individual.death:
+            daysBefore= (today.date() - individual.death).days
+            if daysBefore>0 and daysBefore<= 30:
+                deadPeopleList.append(individual.id+" "+str(individual.name[0])+" "+str(individual.name[1]))
+
+
                   
 
 
@@ -356,4 +379,15 @@ def display():
     print("---------------------------------------------------------")
     for married_person in marriedList:
         print(married_person)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US35: List of people born in last 30 days")
+    print("-------------------------------------------------------------------")
+    for newBorn in newBornList:
+        print(newBorn)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US36: List of people who died in the last 30 days")
+    print("---------------------------------------------------------------------------")
+    for deadPeople in deadPeopleList:
+        print(deadPeople)
+
 
