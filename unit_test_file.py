@@ -32,7 +32,14 @@ class test_marriage_after_14yrs(unittest.TestCase):
         individuals, families = GEDCOMFileParser(fileName)
         self.assertFalse(us10_marriage_after_14yrs(individuals,families))
 
+class test_unique_name_birthday(unittest.TestCase):
+    def test_unique_name_birthday(self):
+        individuals, families = GEDCOMFileParser(fileName)
+        self.assertTrue(us23_unique_name_birthday(individuals))
 
-
+class test_unique_indivdual_family_id(unittest.TestCase):
+    def test_unique_indivdual_family_id(self):
+        individuals, families = GEDCOMFileParser(fileName)
+        self.assertTrue(us23_unique_name_birthday(individuals))
 if __name__ == '__main__':
     unittest.main()

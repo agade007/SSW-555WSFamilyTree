@@ -51,3 +51,7 @@ ERROR:FAMILY:US05:Death of Husband@I13@occurs before marriage.2020-05-10
 ERROR:INDIVIDUAL: US16: @I1@ Lastname not the same as father 
 ANOMALY: FAMILY: US10:@F7@ @I16@ Husband is married before age of 14
 ANOMALY: FAMILY: US21: @F6@ @I9@ Wife is not a female
+[4;33mReloaded modules[24m: gedcomFileParser, classModels, userStory[0m
+[4;33mReloaded modules[24m: gedcomFileParser, classModels, userStory[0m
+[4;33mReloaded modules[24m: gedcomFileParser, classModels, userStory[0m
+[4;33mReloaded modules[24m: gedcomFileParser, classModels, userStory[0m

@@ -263,6 +263,48 @@ def us21_correct_gender(individuals, families):
     return return_flag
 
 
+#US22 - All individual id and family id must be unique
+def us22_unique_indivdual_family_id(individuals,families):
+
+    return_flag = True
+    idset1 = set()
+    idset2=set()
+    idlist=[]
+    for individual in individuals:
+        individualId=individual.id
+        idlist.append(individualId)
+    for family in families:
+        familyId=family.id
+        idlist.append(familyId)
+    for item in idlist:
+        if item not in idset1:
+            idset1.add(item)
+        else:
+            idset2.add(item)
+    for duplicateId in idset2:
+        if duplicateId.startswith('@I'):
+            error_description =" Duplicate ID "+duplicateId+" Found"
+            report_error('ERROR: INDIVIDUAL: US22: ', error_description)
+        if duplicateId.startswith('@F'):
+            error_description = " Duplicate ID "+duplicateId+" Found"
+            report_error('ERROR: FAMILY: US22: ', error_description)
+        return_flag = False
+    return return_flag
+
+#US23 - No more than one individual with same name and birth date must be present
+def us23_unique_name_birthday(individuals):
+    return_flag = True
+
+    for individual in individuals:
+        for other_individual in individuals:
+            if individual.name and other_individual.name and individual.name == other_individual.name and individual.id != other_individual.id:
+                if other_individual.birthday and individual.birthday and other_individual.birthday and individual.birthday:
+                    error_description ="The two individuals "+individual.id+" and "+other_individual.id+"have same name and bithdate"
+                    report_error('ERROR: INDIVIDUAL: US23: ', error_description)
+                    return_flag = False
+
+    return return_flag
+
                   
 
 
