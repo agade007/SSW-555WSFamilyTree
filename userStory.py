@@ -2,6 +2,9 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from collections import Counter
 errorList = []
+deathList = []
+marriedList = []
+
 
 def checkUserStory(individuals, families):
 
@@ -21,6 +24,11 @@ def checkUserStory(individuals, families):
     us10_marriage_after_14yrs(individuals, families)
     us21_correct_gender(individuals, families)
 
+    #Sprint 3
+    us22_unique_indivdual_family_id(individuals, families)
+    us23_unique_name_birthday(individuals)
+    us_29_list_all_deceased_individuals(individuals)
+    us30_list_living_married_people(individuals, families)
     
 #User story 1 dates are before current date
 def us_01_dates_before_current(individuals, families):
@@ -305,6 +313,27 @@ def us23_unique_name_birthday(individuals):
 
     return return_flag
 
+#US29 - List all deceased individuals in gedcom file
+def us_29_list_all_deceased_individuals(individuals):
+    for individual in individuals:
+        if individual.death is not None:
+            value = individual.id+" "+str(individual.name)
+            deathList.append(value)
+
+#US30 - List all living married people in gedcom file
+def us30_list_living_married_people(individuals, families):
+
+    for family in families:
+        for individual in individuals:
+            if individual.id == family.husbandId:
+                husband = individual
+            if individual.id == family.wifeId:
+                wife = individual
+
+        if husband.alive is True and wife.alive is True:
+            marriedPeople = husband.id+" "+str(husband.name)+" and "+wife.id+" "+str(wife.name)
+            marriedList.append(marriedPeople)
+
                   
 
 
@@ -313,7 +342,18 @@ def report_error(errortype, description):
     err = errortype  + description
     errorList.append(err)
 
-def display_error():
+def display():
 
     for err in errorList:
         print(err)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US29: Deceased individuals in file")
+    print("-------------------------------------------------------------")
+    for person in deathList:
+        print(person)
+    print(" ")
+    print("INFORMATION: FAMILY: US30: Living married people in file")
+    print("---------------------------------------------------------")
+    for married_person in marriedList:
+        print(married_person)
+
