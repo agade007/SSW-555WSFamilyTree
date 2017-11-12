@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from collections import Counter
 errorList = []
@@ -6,7 +6,7 @@ deathList = []
 marriedList = []
 newBornList = []
 deadPeopleList = []
-
+livingcouples=[]
 def checkUserStory(individuals, families):
 
     #Sprint 1
@@ -358,6 +358,42 @@ def us36_people_died_in_last30_days(individuals):
 
 
                   
+#US13 Siblings spacing
+def us13_siblings_spacing(individuals,families):
+    return_flag = True
+
+    for family in families:
+        sibling_ids = family.children
+        siblings_list = list(x for x in individuals if x.id in sibling_ids)
+
+        siblings_birthdays = sorted(siblings_list, key=lambda individual: individual.birthday, reverse=False) 
+        i=0
+        count = len(siblings_birthdays)
+        while i < count-1:
+            diff = siblings_birthdays[i+1].birthday - siblings_birthdays[i].birthday
+            if (diff > timedelta(days=2) and diff < timedelta(days=243)):
+                error_descrip = "Siblings spacing "
+                error_location = [siblings_birthdays[i+1].id, siblings_birthdays[i].id]
+                report_error("ERROR: INDIVIDUAL:US18",error_descrip, error_location)
+                return_flag = False
+            i+=1
+        return return_flag
+
+#US18 Siblings should not marry each other
+
+def us18_siblings_should_notmarry(individuals,families):
+    return_flag=True
+    for family in families:
+        siblings_ids=family.children
+        siblings_list=list(x for x in individuals if x.id in siblings_ids) 
+        for sibling in siblings_list:
+            sibling_family=next((x for x in families if x.husband==sibling.id),None)
+            if sibling_family and sibling_family.wife in siblings_ids:
+                error_description="Sibling"+sibling.id +"is married to another sibling"+sibling_family.wife 
+                report_error('ERROR: INDIVIDUAL: US18: ', error_description)
+                return_flag=False
+    return return_flag
+
 
 
 def report_error(errortype, description):
@@ -389,5 +425,7 @@ def display():
     print("---------------------------------------------------------------------------")
     for deadPeople in deadPeopleList:
         print(deadPeople)
-
-
+    print("INFORMATION: FAMILY: US39: List of all living couples whose marriage anniversaries occur in the next 30 days")
+    print("---------------------------------------------------------------------------")
+    for livingcouple in livingcouples:
+        print(livingcouple)

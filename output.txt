@@ -55,8 +55,8 @@ ERROR:INDIVIDUAL: US16: @I5@ Lastname not the same as father
 ANOMALY: FAMILY: US10:@F7@ @I16@ Husband is married before age of 14
 ANOMALY: FAMILY: US21: @F3@ @I14@ Husband is not a male
 ANOMALY: FAMILY: US21: @F6@ @I9@ Wife is not a female
-ERROR: FAMILY: US22:  Duplicate ID @F7@ Found
 ERROR: INDIVIDUAL: US22:  Duplicate ID @I14@ Found
+ERROR: FAMILY: US22:  Duplicate ID @F7@ Found
 ERROR: INDIVIDUAL: US23: The two individuals @I11@ and @I18@have same name and bithdate
 ERROR: INDIVIDUAL: US23: The two individuals @I18@ and @I11@have same name and bithdate
  
@@ -83,3 +83,5 @@ INFORMATION: INDIVIDUAL: US35: List of people born in last 30 days
 INFORMATION: INDIVIDUAL: US36: List of people who died in the last 30 days
 ---------------------------------------------------------------------------
 @I14@ Harishchandra /Bagwe/
+INFORMATION: FAMILY: US39: List of all living couples whose marriage anniversaries occur in the next 30 days
+---------------------------------------------------------------------------
