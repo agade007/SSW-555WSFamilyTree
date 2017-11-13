@@ -8,6 +8,8 @@ newBornList = []
 deadPeopleList = []
 singleList = []
 orphanList = []
+upcomingBirthdayList = []
+upcomingAnniversaryList = []
 
 
 def checkUserStory(individuals, families):
@@ -39,6 +41,8 @@ def checkUserStory(individuals, families):
     #Sprint4
     us31_single_over_30years(individuals, families)
     us33_list_orphans_below18years(individuals, families)
+    us38_upcoming_birthdays(individuals)
+    us39_upcoming_anniversaries(families)
 
     
 #User story 1 dates are before current date
@@ -392,6 +396,29 @@ def us33_list_orphans_below18years(individuals, families):
             for orphan in orphanChildren:
                 if orphan.age < 18:
                     orphanList.append(orphan.id+" "+str(orphan.name[0])+" "+str(orphan.name[1]))
+               
+#US38 List upcoming birthdays
+def us38_upcoming_birthdays(individuals):
+    todaysDate = datetime.today()
+    for individual in individuals:
+        if individual.alive == True:
+            individualBirthday = individual.birthday
+            individualBirthday = datetime(todaysDate.year, individualBirthday.month, individualBirthday.day)
+            upcomingBirthdayDays = (individualBirthday - todaysDate).days
+            if upcomingBirthdayDays <= 30 and upcomingBirthdayDays >= 0:
+                upcomingBirthdayList.append(individual.id+" "+str(individual.name)+" Birthday: "+str(individual.birthday.month)+"/"+str(individual.birthday.day))
+
+#US39 List upcoming anniversaries
+def us39_upcoming_anniversaries(families):
+    todaysDate = datetime.today()
+    for family in families:
+        if family.married:
+            weddingDate = family.married
+            weddingDate = datetime(todaysDate.year, weddingDate.month, weddingDate.day)
+            upcomingAnniversaryDays = (weddingDate - todaysDate).days
+            if upcomingAnniversaryDays <= 30 and upcomingAnniversaryDays >= 0:
+                upcomingAnniversaryList.append(family.id+" Anniversary Date: "+str(family.married.month)+"/"+str(family.married.day))
+
 
 
 def report_error(errortype, description):
@@ -433,5 +460,14 @@ def display():
     print("---------------------------------------------------------------------------")
     for orphans in orphanList:
         print(orphans)
-
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US38: List upcoming birthdays in 30 days")
+    print("---------------------------------------------------------------------------")
+    for birthdayPeople in upcomingBirthdayList:
+        print(birthdayPeople)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US39: List upcoming anniversaries in 30 days")
+    print("---------------------------------------------------------------------------")
+    for anniversaryPeople in upcomingAnniversaryList:
+        print(anniversaryPeople)
     
