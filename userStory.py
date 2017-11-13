@@ -10,7 +10,8 @@ singleList = []
 orphanList = []
 upcomingBirthdayList = []
 upcomingAnniversaryList = []
-
+multipleBirthList = []
+livingPeopleList = []
 
 def checkUserStory(individuals, families):
 
@@ -43,7 +44,8 @@ def checkUserStory(individuals, families):
     us33_list_orphans_below18years(individuals, families)
     us38_upcoming_birthdays(individuals)
     us39_upcoming_anniversaries(families)
-
+    us32_multiple_births_in_family(individuals, families)
+    us37_list_living_spouses_descendents(individuals, families)
     
 #User story 1 dates are before current date
 def us_01_dates_before_current(individuals, families):
@@ -419,6 +421,33 @@ def us39_upcoming_anniversaries(families):
             if upcomingAnniversaryDays <= 30 and upcomingAnniversaryDays >= 0:
                 upcomingAnniversaryList.append(family.id+" Anniversary Date: "+str(family.married.month)+"/"+str(family.married.day))
 
+#US32 List multiple births in family
+def us32_multiple_births_in_family(individuals,families):
+    for family in families:
+        children = family.children
+        siblings = list(child for child in individuals if child.id in children)
+        birthdayList = []
+        for sibling in siblings:
+            birthdayList.append(sibling.birthday)
+        numberOfChildren = Counter(birthdayList).most_common(1)
+        for (a,b) in numberOfChildren:
+            if b > 2:
+                multipleBirthList.append("Family: "+family.id+" Children: "+str(family.children))
+
+#US37 List the living spouses and descendents of the people who died in last 30 days
+def us37_list_living_spouses_descendents(individuals,families):
+    for individual in individuals:
+        if individual.alive == False:
+            differnceInDays = (datetime.now().date() - individual.death).days
+            if differnceInDays <= 30 and len(individual.spouse) > 0:
+                for family in families:
+                    if family.id == individual.spouse[0]:
+                        if individual.id == family.husbandId:
+                            livingPeopleList.append("Person Died: "+individual.id+" "+str(individual.name)+
+                                                    " Living spouse: "+family.wifeId+" "+str(family.wifeName)+" Descendents: "+str(family.children))
+                        if individual.id == family.wifeId:
+                            livingPeopleList.append("Person Died: " + individual.id +" "+str(individual.name)+
+                                                    " Living spouse: " + family.husbandId +" "+str(family.husbandName)+" Descendents: " + str(family.children))
 
 
 def report_error(errortype, description):
@@ -470,4 +499,14 @@ def display():
     print("---------------------------------------------------------------------------")
     for anniversaryPeople in upcomingAnniversaryList:
         print(anniversaryPeople)
-    
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US32: List multiple births in file")
+    print("---------------------------------------------------------------------------")
+    for multipleBirth in multipleBirthList:
+        print(multipleBirth)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US37: List living spouses and descendents of people who died in last 30 days")
+    print("------------------------------------------------------------------------------------------------------")
+    for livingPeople in livingPeopleList:
+        print(livingPeople)
+
