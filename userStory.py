@@ -6,6 +6,9 @@ deathList = []
 marriedList = []
 newBornList = []
 deadPeopleList = []
+singleList = []
+orphanList = []
+
 
 def checkUserStory(individuals, families):
 
@@ -32,6 +35,10 @@ def checkUserStory(individuals, families):
     us30_list_living_married_people(individuals, families)
     us35_people_born_in_30days(individuals)
     us36_people_died_in_last30_days(individuals)
+    
+    #Sprint4
+    us31_single_over_30years(individuals, families)
+    us33_list_orphans_below18years(individuals, families)
 
     
 #User story 1 dates are before current date
@@ -356,6 +363,36 @@ def us36_people_died_in_last30_days(individuals):
             if daysBefore>0 and daysBefore<= 30:
                 deadPeopleList.append(individual.id+" "+str(individual.name[0])+" "+str(individual.name[1]))
 
+# US31 List all single people over 30 years
+def us31_single_over_30years(individuals, families):
+    marriedPeople=[]
+    for family in families:
+        husband = family.husbandId
+        wife = family.wifeId
+        marriedPeople.append(husband)
+        marriedPeople.append(wife)
+    for individual in individuals:
+        if individual.age > 30:
+            if individual.id not in marriedPeople:
+                singleList.append(individual.id+" "+str(individual.name[0])+" "+str(individual.name[1]))
+
+# US33 List orphan children below 18 years of age
+def us33_list_orphans_below18years(individuals, families):
+    for family in families:
+        if len(family.children) == 0:
+            break
+        for individual in individuals:
+            if individual.id == family.husbandId:
+                husband = individual
+            if individual.id == family.wifeId:
+                wife = individual
+
+        if husband.alive is False and wife.alive is False:
+            orphanChildren = list(child for child in individuals if child.id in family.children)
+            for orphan in orphanChildren:
+                if orphan.age < 18:
+                    orphanList.append(orphan.id+" "+str(orphan.name[0])+" "+str(orphan.name[1]))
+
 
 def report_error(errortype, description):
 
@@ -386,4 +423,15 @@ def display():
     print("---------------------------------------------------------------------------")
     for deadPeople in deadPeopleList:
         print(deadPeople)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US31: List of single people over 30 years")
+    print("---------------------------------------------------------------------------")
+    for singles in singleList:
+        print(singles)
+    print(" ")
+    print("INFORMATION: INDIVIDUAL: US33: List of orphan children below 18 years")
+    print("---------------------------------------------------------------------------")
+    for orphans in orphanList:
+        print(orphans)
+
     
