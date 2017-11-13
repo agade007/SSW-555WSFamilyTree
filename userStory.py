@@ -6,7 +6,7 @@ deathList = []
 marriedList = []
 newBornList = []
 deadPeopleList = []
-livingcouples=[]
+
 def checkUserStory(individuals, families):
 
     #Sprint 1
@@ -386,7 +386,4 @@ def display():
     print("---------------------------------------------------------------------------")
     for deadPeople in deadPeopleList:
         print(deadPeople)
-    print("INFORMATION: FAMILY: US39: List of all living couples whose marriage anniversaries occur in the next 30 days")
-    print("---------------------------------------------------------------------------")
-    for livingcouple in livingcouples:
-        print(livingcouple)
+    
